@@ -1,2 +1,3 @@
 # robust-surface-curvature
-An unsupervised learning and robust surface curvature measure for surface complementarity 
+An unsupervised learning and robust surface curvature measure for surface complementarity - Abhijit Gupta, Arnab Mukherjee
+
