@@ -46,53 +46,6 @@ def poly_area(poly):
     return abs(result/2)
 
 
-pts = np.array([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0],
-                [0, 0, 1], [1, 0, 1], [1, 1, 1], [0, 1, 1], [0.5, 0.5, 0.5], [0.4, 0.6, 0.3]])
-
-
-def concave(points, alpha=1.5):
-    points = [(i[0], i[1], i[2]) if type(i) != tuple else i for i in points]
-    de = Delaunay(points)
-    dec = []
-#    a = alpha_x
-#    b = alpha_y
-#    c = alpha_z
-    for i in de.simplices:
-        tmp = []
-        j = [points[c] for c in i]
-        temp = [np.product(np.array([np.linalg.norm(np.array(y[0])-np.array(y[1]))
-                                     for y in itertools.combinations(x, 2)]))/(4*poly_area(x)) for x in itertools.combinations(j, 3)]
-        if len(np.extract([bool(q > (1/alpha)) for q in temp], np.array(temp))) > 0:
-            #        temp=[[abs(x[0][0]-x[1][0]),abs(x[0][1]-x[1][1]),abs(x[0][2]-x[1][2])] for x in itertools.combinations(j,2)]
-            #        if len(np.extract(lambda x_1:x_1>a,np.array(temp)[:,0]))>0 or len(np.extract(lambda x_1:x_1>b,np.array(temp)[:,2]))>0 or len(np.extract(lambda x_1:x_1>c,np.array(temp)[:,0]))>0:
-            continue
-        for c in i:
-            tmp.append(points[c])
-        dec.append(tmp)
-        G = nx.Graph()
-        for i in dec:
-            G.add_edge(i[0], i[1])
-            G.add_edge(i[0], i[2])
-            G.add_edge(i[0], i[3])
-            G.add_edge(i[1], i[2])
-            G.add_edge(i[1], i[3])
-            G.add_edge(i[2], i[3])
-    ret = []
-    ch_area = []
-    ch_volume = []
-    for graph in nx.connected_component_subgraphs(G):
-
-        ch = ConvexHull(graph.nodes())
-        ch_area.append(ch.area)
-        ch_volume.append(ch.volume)
-#        print(" ")
-        tmp = []
-        for i in ch.simplices:
-            tmp.append(list(graph.nodes())[i[0]])
-            tmp.append(list(graph.nodes())[i[1]])
-            tmp.append(list(graph.nodes())[i[2]])
-        ret.append(tmp)
-    return ch_area, ch_volume, ret
 
 
 def fit_hypersphere(data, method="Hyper"):
